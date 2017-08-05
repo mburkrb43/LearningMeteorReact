@@ -20,21 +20,24 @@ import ImageList from './components/image_list';
 
 //class based - provides more conttrol - right way
 class App extends Component {
+
+    constructor(props){
+        super(props);
+        this.state = { images:[] };
+    }
+
     componentWillMount() {
         console.log('App is about to render..runs just once');
         // Make a request for a user with a given ID
         axios.get('https://api.imgur.com/3/gallery/hot/viral/0')
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+        .then(response => this.setState( { images: response.data.data})); //remember imgur json
+        //always use setState only this.state = on first initialization like above
     }
     render() {
+        //console.log(this.state.images);
     return (
         <div>
-            <ImageList />
+            <ImageList images={this.state.images} />
         </div>
     );
     }
